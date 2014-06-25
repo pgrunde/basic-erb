@@ -2,24 +2,24 @@ require "erb_generator"
 
 class HTMLGenerator < ERBGenerator
   def initialize(text=nil)
-    if text != nil
-      @text = (text.gsub("<%= yield %>", " ")).split(" ")
-      @first_tag = @text[0].to_s
-      @last_tag = @text[1].to_s
-    else
-      @first_tag = ""
-      @last_tag = ""
-    end
+    @wrapper = text
   end
 
-  def wrapper(content)
-    @first_tag + content + @last_tag
+  def wrapper(erb_output)
+    if @wrapper
+      template = @wrapper
+      options_hash = {:locals => {:yield_replace => erb_output}}
+      erb template, options_hash
+    else
+      erb_output
+    end
   end
 
   def section(text)
     template = "<section><%= section_text %></section>"
     options_hash = {:locals => {:section_text => text}}
-    (@first_tag + (erb template, options_hash) + @last_tag)
+    output = erb template, options_hash
+    wrapper(output)
   end
 
   def unordered_list(items)
@@ -31,7 +31,8 @@ class HTMLGenerator < ERBGenerator
 </ul>
     TEMPLATE
     options_hash = {:locals => {:html_items => items}}
-    (@first_tag + (erb template, options_hash) + @last_tag)
+    output = erb template, options_hash
+    wrapper(output)
   end
 
   def button(text, hsh={})
@@ -39,9 +40,11 @@ class HTMLGenerator < ERBGenerator
     template_with_class = "<button class='<%= class_hsh[:class] %>'><%= button_text %></button>"
     options_hash = {:locals => {:button_text => text, :class_hsh => hsh}}
     if hsh[:class] == nil
-      (@first_tag + (erb template_no_class, options_hash) + @last_tag)
+      output = erb template_no_class, options_hash
+      wrapper(output)
     else
-      (@first_tag + (erb template_with_class, options_hash) + @last_tag)
+      output = erb template_with_class, options_hash
+      wrapper(output)
     end
   end
 
