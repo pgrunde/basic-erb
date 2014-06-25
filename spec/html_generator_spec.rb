@@ -21,7 +21,6 @@ describe HTMLGenerator do
 
   describe "#unordered_list" do
     it "returns a string of html that contains the list" do
-      skip
       list_html = strip_whitespace(
         html_generator.unordered_list(["item1", "item2", "item3"])
       )
@@ -32,20 +31,16 @@ describe HTMLGenerator do
 
   describe "#button" do
     it "returns a string of html that has a button with text" do
-      skip
-      button_html = strip_whitespace(
+      button_html =
         html_generator.button("button-text")
-      )
 
       expect(button_html).to eq("<button>button-text</button>")
     end
 
     context "with a class attribute given" do
       it "returns the button with a class attribute" do
-        skip
-        button_html = strip_whitespace(
+        button_html =
           html_generator.button("flashy-button", :class => "flashy_class")
-        )
 
         expect(button_html).to eq("<button class='flashy_class'>flashy-button</button>")
       end
@@ -54,7 +49,6 @@ describe HTMLGenerator do
 
   context "with a layout" do
     it "returns wraps all html in the layout by replacing yield" do
-      skip
       html_generator = HTMLGenerator.new("<main><%= yield %></main>")
       html = strip_whitespace(
         html_generator.section("section_text")
