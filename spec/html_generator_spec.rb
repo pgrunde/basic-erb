@@ -49,19 +49,19 @@ describe HTMLGenerator do
 
   context "with a layout" do
     it "returns wraps all html in the layout by replacing yield" do
-      html_generator = HTMLGenerator.new("<main><%= yield_replace %></main>")
+      html_generator = HTMLGenerator.new("<main><%= yield %></main>")
       html = strip_whitespace(
         html_generator.section("section_text")
       )
       expect(html).to eq("<main><section>section_text</section></main>")
 
-      html_generator = HTMLGenerator.new("<div><%= yield_replace %></div>")
+      html_generator = HTMLGenerator.new("<div><%= yield %></div>")
       html = strip_whitespace(
         html_generator.unordered_list(["an-item"])
       )
       expect(html).to eq("<div><ul><li>an-item</li></ul></div>")
 
-      html_generator = HTMLGenerator.new("<section><%= yield_replace %></section>")
+      html_generator = HTMLGenerator.new("<section><%= yield %></section>")
       html = strip_whitespace(
         html_generator.button("button-in-a-section")
       )
